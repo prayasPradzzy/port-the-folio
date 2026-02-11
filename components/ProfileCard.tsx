@@ -61,6 +61,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   const wrapRef = useRef<HTMLDivElement>(null);
   const shellRef = useRef<HTMLDivElement>(null);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isHoveringButton, setIsHoveringButton] = useState(false);
   const enterTimerRef = useRef<number | null>(null);
   const leaveRafRef = useRef<number | null>(null);
 
@@ -166,14 +167,18 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   };
 
   const handlePointerMove = useCallback((event: PointerEvent) => {
-    if (!shellRef.current || !tiltEngine || isFlipped) return;
+    if (!shellRef.current || !tiltEngine || isFlipped || isHoveringButton) return;
+    const target = event.target as HTMLElement;
+    if (target.closest('.pc-contact-btn, .pc-back a')) return;
     const { x, y } = getOffsets(event, shellRef.current);
     tiltEngine.setTarget(x, y);
-  }, [tiltEngine, isFlipped]);
+  }, [tiltEngine, isFlipped, isHoveringButton]);
 
   const handlePointerEnter = useCallback((event: PointerEvent) => {
     const shell = shellRef.current;
-    if (!shell || !tiltEngine || isFlipped) return;
+    if (!shell || !tiltEngine || isFlipped || isHoveringButton) return;
+    const target = event.target as HTMLElement;
+    if (target.closest('.pc-contact-btn, .pc-back a')) return;
     shell.classList.add('active');
     shell.classList.add('entering');
     if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
@@ -182,11 +187,11 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     }, ANIMATION_CONFIG.ENTER_TRANSITION_MS);
     const { x, y } = getOffsets(event, shell);
     tiltEngine.setTarget(x, y);
-  }, [tiltEngine, isFlipped]);
+  }, [tiltEngine, isFlipped, isHoveringButton]);
 
   const handlePointerLeave = useCallback(() => {
     const shell = shellRef.current;
-    if (!shell || !tiltEngine || isFlipped) return;
+    if (!shell || !tiltEngine || isFlipped || isHoveringButton) return;
     tiltEngine.toCenter();
     const checkSettle = () => {
       const { x, y, tx, ty } = tiltEngine.getCurrent();
@@ -200,7 +205,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     };
     if (leaveRafRef.current) cancelAnimationFrame(leaveRafRef.current);
     leaveRafRef.current = requestAnimationFrame(checkSettle);
-  }, [tiltEngine, isFlipped]);
+  }, [tiltEngine, isFlipped, isHoveringButton]);
 
   useEffect(() => {
     if (!enableTilt || !tiltEngine) return;
@@ -222,6 +227,19 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     };
   }, [enableTilt, tiltEngine, handlePointerMove, handlePointerEnter, handlePointerLeave]);
 
+  useEffect(() => {
+    const shell = shellRef.current;
+    if (!shell) return;
+    
+    if (isFlipped || isHoveringButton) {
+      shell.classList.remove('active');
+      shell.classList.remove('entering');
+      if (tiltEngine) {
+        tiltEngine.toCenter();
+      }
+    }
+  }, [isFlipped, isHoveringButton, tiltEngine]);
+
   const cardStyle = useMemo(() => ({
     '--inner-gradient': innerGradient ?? DEFAULT_INNER_GRADIENT,
     '--behind-glow-color': behindGlowColor ?? 'rgba(45, 27, 78, 0.15)',
@@ -230,7 +248,16 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   } as React.CSSProperties), [innerGradient, behindGlowColor, behindGlowSize]);
 
   const toggleFlip = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
+    const shell = shellRef.current;
+    if (shell) {
+      shell.classList.remove('active');
+      shell.classList.remove('entering');
+    }
+    if (tiltEngine && !isFlipped) {
+      tiltEngine.toCenter();
+    }
     setIsFlipped(!isFlipped);
   };
 
@@ -259,7 +286,14 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                         </div>
                       </div>
                     </div>
-                    <button onClick={toggleFlip} className="pc-contact-btn">{contactText}</button>
+                    <button 
+                      onClick={toggleFlip} 
+                      onMouseEnter={() => setIsHoveringButton(true)}
+                      onMouseLeave={() => setIsHoveringButton(false)}
+                      className="pc-contact-btn"
+                    >
+                      {contactText}
+                    </button>
                   </div>
                 )}
               </div>
@@ -343,29 +377,35 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         .pc-card-inner { width: 100%; height: 100%; transform-style: preserve-3d; position: relative; }
         
         .pc-card { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--card-radius); overflow: hidden; border: 1px solid rgba(255,255,255,0.04); background: #000; box-shadow: 0 40px 80px rgba(0,0,0,0.9); }
+        .pc-card * { pointer-events: none; }
         .pc-card-shell.active:not(.flipped) .pc-card-inner { transform: rotateX(var(--rotate-y)) rotateY(var(--rotate-x)); }
         
         .pc-back { transform: rotateY(180deg); }
         
         .pc-inside { inset: 0; position: absolute; background: var(--inner-gradient); }
-        .pc-shine { position: absolute; inset: 0; background: linear-gradient(135deg, transparent, rgba(255,255,255,0.015), transparent); mix-blend-mode: overlay; pointer-events: none; }
-        .pc-glare { position: absolute; inset: 0; background: radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(255,255,255,0.03), transparent 60%); mix-blend-mode: soft-light; pointer-events: none; }
+        .pc-shine { position: absolute; inset: 0; background: linear-gradient(135deg, transparent, rgba(255,255,255,0.015), transparent); mix-blend-mode: overlay; }
+        .pc-glare { position: absolute; inset: 0; background: radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(255,255,255,0.03), transparent 60%); mix-blend-mode: soft-light; }
         
         .pc-avatar-content { height: 100%; position: relative; }
         .avatar { width: 100%; height: 100%; object-fit: cover; opacity: 0.65; filter: grayscale(60%) brightness(0.7) contrast(1.1); transition: all 1s cubic-bezier(0.19, 1, 0.22, 1); }
         .pc-card-wrapper:hover .avatar { opacity: 0.8; filter: grayscale(0%) brightness(0.8) contrast(1); }
         
         .pc-user-info { position: absolute; bottom: 18px; left: 14px; right: 14px; display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.85); backdrop-filter: blur(40px); padding: 10px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.06); z-index: 10; }
+        .pc-user-details { display: flex; align-items: center; }
         .pc-mini-avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
         .pc-mini-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .pc-user-text { flex: 1; margin-left: 12px; }
         .pc-handle { font-size: 12px; font-weight: 800; color: #fff; line-height: 1.2; letter-spacing: 0.5px; opacity: 0.9; }
         .pc-status { font-size: 9px; color: rgba(255,255,255,0.3); display: flex; align-items: center; margin-top: 1px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
         
-        .pc-contact-btn { background: #fff; color: #000; font-size: 9px; font-weight: 900; padding: 10px 16px; border-radius: 12px; transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1); text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 15px rgba(255,255,255,0.05); }
+        .pc-contact-btn { background: #fff; color: #000; font-size: 9px; font-weight: 900; padding: 10px 16px; border-radius: 12px; transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1); text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 15px rgba(255,255,255,0.05); cursor: pointer; border: none; pointer-events: auto !important; position: relative; z-index: 30; flex-shrink: 0; }
         .pc-contact-btn:hover { background: #eee; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,255,255,0.1); }
+        .pc-contact-btn:active { transform: translateY(0px); }
         
-        .pc-details { position: absolute; top: 40px; left: 0; right: 0; text-align: center; pointer-events: none; z-index: 5; }
+        .pc-back a { pointer-events: auto !important; }
+        .pc-back button { pointer-events: auto !important; }
+        
+        .pc-details { position: absolute; top: 40px; left: 0; right: 0; text-align: center; z-index: 5; }
         .pc-details h3 { font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,1); margin: 0; letter-spacing: -1.5px; text-transform: uppercase; }
         .pc-details p { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: -2px; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; }
       `}</style>

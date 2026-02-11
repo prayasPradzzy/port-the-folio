@@ -33,13 +33,13 @@ const Contact: React.FC = () => {
             Available for freelance, full-time positions, or just to chat about the latest in AI and Design.
           </p>
           <div className="flex gap-6 mt-4">
-            <a href="https://x.com/PradzzyGotALife" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 hover:text-black hover:bg-white hover:px-3 hover:py-1 hover:rounded-md transition-all duration-300">
+            <a href="https://x.com/PradzzyGotALife" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest text-[#B19EEF] opacity-50 hover:opacity-100 hover:text-[#B19EEF] hover:bg-white hover:px-3 hover:py-1 hover:rounded-md transition-all duration-300">
               Twitter
             </a>
-            <a href="https://github.com/prayasPradzzy" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 hover:text-black hover:bg-white hover:px-3 hover:py-1 hover:rounded-md transition-all duration-300">
+            <a href="https://github.com/prayasPradzzy" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest text-[#B19EEF] opacity-50 hover:opacity-100 hover:text-[#B19EEF] hover:bg-white hover:px-3 hover:py-1 hover:rounded-md transition-all duration-300">
               GitHub
             </a>
-            <a href="https://www.linkedin.com/in/prayas-singh-572759362/" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 hover:text-black hover:bg-white hover:px-3 hover:py-1 hover:rounded-md transition-all duration-300">
+            <a href="https://www.linkedin.com/in/prayas-singh-572759362/" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest text-[#B19EEF] opacity-50 hover:opacity-100 hover:text-[#B19EEF] hover:bg-white hover:px-3 hover:py-1 hover:rounded-md transition-all duration-300">
               LinkedIn
             </a>
           </div>
