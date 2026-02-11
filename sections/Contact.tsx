@@ -25,7 +25,7 @@ const Contact: React.FC = () => {
       />
       
       <div className="relative z-10 w-full max-w-6xl px-4 flex flex-col md:flex-row items-center justify-around gap-12 py-20 pointer-events-none">
-        <div className="max-w-md text-center md:text-left pointer-events-auto">
+        <div className="relative z-30 max-w-md text-center md:text-left pointer-events-auto">
           <h2 className="text-5xl md:text-7xl font-bold tracking-tighter leading-none mb-6">
             Let's Make <span className="text-white/40">Magic.</span>
           </h2>
