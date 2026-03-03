@@ -33,7 +33,7 @@ const Projects: React.FC = () => {
     >
       <div className="absolute inset-0 z-0 opacity-80">
         <FaultyTerminal
-          scale={1.5}
+          scale={2.1}
           gridMul={[2, 1]}
           digitSize={1.2}
           timeScale={0.5}
@@ -45,11 +45,11 @@ const Projects: React.FC = () => {
           chromaticAberration={0}
           dither={0}
           curvature={0.1}
-          tint="#A7EF9E"
+          tint="#ffffff"
           mouseReact
-          mouseStrength={0.5}
+          mouseStrength={2}
           pageLoadAnimation
-          brightness={0.4}
+          brightness={0.6}
         />
       </div>
       
