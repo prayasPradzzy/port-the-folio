@@ -53,9 +53,9 @@ const Projects: React.FC = () => {
         />
       </div>
       
-      <div ref={contentRef} className="relative z-10 w-full max-w-7xl px-4">
-        <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8 text-center drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]">Selected Works</h2>
-        <div className="w-full border border-white/5 bg-black/60 backdrop-blur-2xl rounded-3xl relative overflow-hidden py-32 px-12">
+      <div ref={contentRef} className="relative z-10 w-full max-w-7xl px-4 pointer-events-none">
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8 text-center drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] pointer-events-none">Selected Works</h2>
+        <div className="w-full border border-white/5 bg-black/60 backdrop-blur-2xl rounded-3xl relative overflow-hidden py-32 px-12 pointer-events-none">
            <div className="absolute inset-0 bg-[#2D1B4E]/10 blur-3xl rounded-full pointer-events-none" />
            <div className="relative z-10 text-center">
              <p className="text-7xl md:text-9xl font-black tracking-tighter opacity-20 uppercase">
