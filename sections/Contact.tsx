@@ -29,17 +29,17 @@ const Contact: React.FC = () => {
           <h2 className="text-5xl md:text-7xl font-bold tracking-tighter leading-none mb-6">
             Let's Make <span className="text-white/40">Magic.</span>
           </h2>
-          <p className="text-lg opacity-50 font-light leading-relaxed mb-10">
+          <p className="text-lg opacity-70 font-light leading-relaxed mb-10">
             Available for freelance, full-time positions, or just to chat about the latest in AI and Design.
           </p>
           <div className="flex gap-6 mt-4">
-            <a href="https://x.com/PradzzyGotALife" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest text-[#B19EEF] opacity-50 hover:opacity-100 hover:text-[#B19EEF] hover:bg-white hover:px-3 hover:py-1 hover:rounded-md transition-all duration-300">
+            <a href="https://x.com/PradzzyGotALife" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest text-[#B19EEF] opacity-70 underline decoration-transparent underline-offset-[6px] hover:opacity-100 hover:decoration-[#B19EEF] focus-visible:opacity-100 transition-all duration-300">
               Twitter
             </a>
-            <a href="https://github.com/prayasPradzzy" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest text-[#B19EEF] opacity-50 hover:opacity-100 hover:text-[#B19EEF] hover:bg-white hover:px-3 hover:py-1 hover:rounded-md transition-all duration-300">
+            <a href="https://github.com/prayasPradzzy" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest text-[#B19EEF] opacity-70 underline decoration-transparent underline-offset-[6px] hover:opacity-100 hover:decoration-[#B19EEF] focus-visible:opacity-100 transition-all duration-300">
               GitHub
             </a>
-            <a href="https://www.linkedin.com/in/prayas-singh-572759362/" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest text-[#B19EEF] opacity-50 hover:opacity-100 hover:text-[#B19EEF] hover:bg-white hover:px-3 hover:py-1 hover:rounded-md transition-all duration-300">
+            <a href="https://www.linkedin.com/in/prayas-singh-572759362/" target="_blank" rel="noopener noreferrer" className="text-xs uppercase tracking-widest text-[#B19EEF] opacity-70 underline decoration-transparent underline-offset-[6px] hover:opacity-100 hover:decoration-[#B19EEF] focus-visible:opacity-100 transition-all duration-300">
               LinkedIn
             </a>
           </div>
@@ -54,7 +54,7 @@ const Contact: React.FC = () => {
         </div>
       </div>
 
-      <footer className="absolute bottom-8 left-0 right-0 text-center text-[10px] uppercase tracking-[0.4em] opacity-20 pointer-events-none">
+      <footer className="absolute bottom-8 left-0 right-0 text-center text-[11px] uppercase tracking-[0.3em] opacity-40 px-4 pointer-events-none">
         &copy; 2026 Prayas Singh — Handcrafted with Passion
       </footer>
     </section>

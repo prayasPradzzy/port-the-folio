@@ -91,7 +91,7 @@ const Hero: React.FC = () => {
           </h1>
         </div>
         <div className="reveal-container overflow-hidden">
-          <p className="reveal-text text-[8px] md:text-sm tracking-[0.6em] text-white/40 uppercase font-light">
+          <p className="reveal-text text-[11px] md:text-sm tracking-[0.3em] md:tracking-[0.5em] leading-loose text-white/60 uppercase font-light">
             Web Developer | Designer | Cybersecurity | AI Enthusiast
           </p>
         </div>
@@ -99,7 +99,7 @@ const Hero: React.FC = () => {
 
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-4 opacity-50">
         <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-white/50 to-transparent" />
-        <span className="text-[7px] tracking-[0.5em] text-white uppercase">Scroll</span>
+        <span className="text-[10px] tracking-[0.5em] text-white uppercase">Scroll</span>
       </div>
     </section>
   );

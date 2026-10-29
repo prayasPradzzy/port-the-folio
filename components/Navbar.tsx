@@ -28,15 +28,15 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] pointer-events-auto">
-      <div className="glass px-8 py-3 rounded-full flex items-center gap-10">
+      <div className="glass px-6 md:px-8 py-3 rounded-full flex items-center gap-6 md:gap-10">
         {navItems.map((item) => (
           <button
             key={item}
             type="button"
             onClick={() => scrollToSection(item)}
-            className="relative group text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-300 active:scale-95"
+            className="relative group text-[11px] font-bold tracking-[0.3em] uppercase transition-all duration-300 active:scale-95 rounded-sm"
           >
-            <span className="opacity-40 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="opacity-60 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300">
               {item}
             </span>
             <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#F5F5F5] transition-all duration-300 group-hover:w-full opacity-50" />
