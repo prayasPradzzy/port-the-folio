@@ -181,18 +181,18 @@ const Projects: React.FC = () => {
             scale={2.1}
             gridMul={[2, 1]}
             digitSize={1.2}
-            timeScale={0.5}
+            timeScale={1.25}
             pause={false}
             scanlineIntensity={0.5}
             glitchAmount={1}
-            flickerAmount={1}
+            flickerAmount={3}
             noiseAmp={1}
             chromaticAberration={0}
             dither={0}
             curvature={0.1}
             tint="#ffffff"
             mouseReact
-            mouseStrength={2}
+            mouseStrength={1}
             pageLoadAnimation
             brightness={0.6}
           />

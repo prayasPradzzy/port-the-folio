@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
@@ -7,12 +7,31 @@ import Loader from './components/Loader';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import Projects from './sections/Projects';
+// import About from './sections/About';
 import Contact from './sections/Contact';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const LOADER_SEEN_KEY = 'loader-seen';
+
+// The intro counter plays once per browser session, not on every reload.
+const loaderSeen = () => {
+  try {
+    return sessionStorage.getItem(LOADER_SEEN_KEY) === '1';
+  } catch {
+    return false;
+  }
+};
+
 const App: React.FC = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => !loaderSeen());
+
+  const finishLoading = useCallback(() => {
+    try {
+      sessionStorage.setItem(LOADER_SEEN_KEY, '1');
+    } catch {}
+    setLoading(false);
+  }, []);
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
@@ -84,7 +103,7 @@ const App: React.FC = () => {
 
   return (
     <main className="bg-black text-[#F5F5F5] selection:bg-[#2D1B4E] selection:text-white min-h-screen antialiased">
-      {loading && <Loader onComplete={() => setLoading(false)} />}
+      {loading && <Loader onComplete={finishLoading} />}
 
       {!loading && (
         <div className="relative z-10 w-full">
@@ -92,6 +111,7 @@ const App: React.FC = () => {
           <div id="smooth-wrapper">
             <Hero />
             <Projects />
+            {/* <About /> */}
           </div>
           <Contact />
         </div>

@@ -1,5 +1,5 @@
 
-import React, { useRef, useLayoutEffect } from 'react';
+import React, { useRef, useLayoutEffect, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
@@ -43,6 +43,14 @@ const PixelSnow: React.FC = () => {
 const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null!);
   const textRef = useRef<HTMLDivElement>(null!);
+  const [visible, setVisible] = useState(true);
+
+  // Stop rendering the snow once the hero is scrolled away.
+  useEffect(() => {
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting));
+    io.observe(containerRef.current);
+    return () => io.disconnect();
+  }, []);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -76,10 +84,16 @@ const Hero: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
+  const seeWork = () => {
+    const lenis = (window as any).lenis;
+    if (lenis) lenis.scrollTo('#projects', { duration: 1.8 });
+    else document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section id="home" ref={containerRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 5] }}>
+        <Canvas camera={{ position: [0, 0, 5] }} frameloop={visible ? 'always' : 'never'}>
           <PixelSnow />
         </Canvas>
       </div>
@@ -94,6 +108,15 @@ const Hero: React.FC = () => {
           <p className="reveal-text text-[11px] md:text-sm tracking-[0.3em] md:tracking-[0.5em] leading-loose text-white/60 uppercase font-light">
             Web Developer | Designer | Cybersecurity | AI Enthusiast
           </p>
+        </div>
+        <div className="reveal-container mt-10 overflow-hidden p-2">
+          <button
+            type="button"
+            onClick={seeWork}
+            className="reveal-text pointer-events-auto rounded-full border border-white/25 bg-white/[0.03] px-7 py-3 text-sm font-medium text-[#F5F5F5] backdrop-blur-md transition-colors duration-300 hover:border-[#B19EEF] hover:bg-[#B19EEF] hover:text-black"
+          >
+            See my work
+          </button>
         </div>
       </div>
 

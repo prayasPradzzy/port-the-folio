@@ -334,10 +334,18 @@ export default function FaultyTerminal({
         };
         rafRef.current = requestAnimationFrame(update);
         ctn.appendChild(gl.canvas);
+
+        // Only render while the terminal is on screen.
+        const visibilityObserver = new IntersectionObserver(([entry]) => {
+            cancelAnimationFrame(rafRef.current);
+            if (entry.isIntersecting) rafRef.current = requestAnimationFrame(update);
+        });
+        visibilityObserver.observe(ctn);
         if (mouseReact) ctn.addEventListener('mousemove', handleMouseMove);
 
         return () => {
             cancelAnimationFrame(rafRef.current);
+            visibilityObserver.disconnect();
             resizeObserver.disconnect();
             if (mouseReact) ctn.removeEventListener('mousemove', handleMouseMove);
             if (gl.canvas.parentElement === ctn) ctn.removeChild(gl.canvas);

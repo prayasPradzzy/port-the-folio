@@ -1,28 +1,54 @@
 
-import React from 'react';
+import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import ProfileCard from '../components/ProfileCard';
-import GhostCursor from '../components/GhostCursor';
+
+// The cursor effect pulls in three.js post-processing, so it loads only when Contact is near.
+const GhostCursor = lazy(() => import('../components/GhostCursor'));
 
 const Contact: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [nearby, setNearby] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setNearby(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: '600px 0px' },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section 
+      ref={sectionRef}
       id="contact"
       className="relative min-h-screen w-full flex flex-col items-center justify-center bg-black overflow-hidden"
     >
-      <GhostCursor 
-        color="#B19EEF"
-        brightness={1.2}
-        trailLength={50}
-        inertia={0.5}
-        bloomStrength={0.08}
-        bloomRadius={0.8}
-        bloomThreshold={0.05}
-        fadeDelayMs={1000}
-        fadeDurationMs={1500}
-        zIndex={1}
-        edgeIntensity={0.15}
-        grainIntensity={0.015}
-      />
+      {nearby && (
+        <Suspense fallback={null}>
+          <GhostCursor
+            color="#B19EEF"
+            brightness={1.2}
+            trailLength={50}
+            inertia={0.5}
+            bloomStrength={0.08}
+            bloomRadius={0.8}
+            bloomThreshold={0.05}
+            fadeDelayMs={1000}
+            fadeDurationMs={1500}
+            zIndex={1}
+            edgeIntensity={0.15}
+            grainIntensity={0.015}
+          />
+        </Suspense>
+      )}
       
       <div className="relative z-10 w-full max-w-6xl px-4 flex flex-col md:flex-row items-center justify-around gap-12 py-20 pointer-events-none">
         <div className="relative z-30 max-w-md text-center md:text-left pointer-events-auto">

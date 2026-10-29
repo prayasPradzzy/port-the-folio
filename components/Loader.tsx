@@ -17,7 +17,7 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
       const obj = { value: 0 };
       gsap.to(obj, {
         value: 100,
-        duration: 2.5,
+        duration: 0.8,
         ease: "power2.inOut",
         onUpdate: () => {
           setCount(Math.floor(obj.value));
@@ -27,7 +27,7 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
           gsap.to(containerRef.current, {
             scale: 2.5,
             opacity: 0,
-            duration: 1.2,
+            duration: 0.5,
             ease: "expo.inOut",
             onComplete: onComplete
           });

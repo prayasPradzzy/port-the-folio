@@ -15,6 +15,12 @@ const round = (v: number, precision = 3) => parseFloat(v.toFixed(precision));
 const adjust = (v: number, fMin: number, fMax: number, tMin: number, tMax: number) => 
   round(tMin + ((tMax - tMin) * (v - fMin)) / (fMax - fMin));
 
+const SOCIALS = [
+  { name: 'LinkedIn', handle: 'Prayas Singh', href: 'https://www.linkedin.com/in/prayas-singh-572759362/', icon: 'M41,4H9C6.24,4,4,6.24,4,9v32c0,2.76,2.24,5,5,5h32c2.76,0,5-2.24,5-5V9C46,6.24,43.76,4,41,4z M17,20v19h-6V20H17z M11,14.47c0-1.4,1.2-2.47,3-2.47s2.93,1.07,3,2.47c0,1.4-1.12,2.53-3,2.53C12.2,17,11,15.87,11,14.47z M39,39h-6c0,0,0-9.26,0-10 c0-2-1-4-3.5-4.04h-0.08C27,24.96,26,27.02,26,29c0,0.91,0,10,0,10h-6V20h6v2.56c0,0,1.93-2.56,5.81-2.56 c3.97,0,7.19,2.73,7.19,8.26V39z' },
+  { name: 'GitHub', handle: '@prayasPradzzy', href: 'https://github.com/prayasPradzzy', icon: 'M17.791,46.836C18.502,46.53,19,45.823,19,45v-5.4c0-0.197,0.016-0.402,0.041-0.61C19.027,38.994,19.014,38.997,19,39 c0,0-3,0-3.6,0c-1.5,0-2.8-0.6-3.4-1.8c-0.7-1.3-1-3.5-2.8-4.7C8.9,32.3,9.1,32,9.7,32c0.6,0.1,1.9,0.9,2.7,2c0.9,1.1,1.8,2,3.4,2 c2.487,0,3.82-0.125,4.622-0.555C21.356,34.056,22.649,33,24,33v-0.025c-5.668-0.182-9.289-2.066-10.975-4.975 c-3.665,0.042-6.856,0.405-8.677,0.707c-0.058-0.327-0.108-0.656-0.151-0.987c1.797-0.296,4.843-0.647,8.345-0.714 c-0.112-0.276-0.209-0.559-0.291-0.849c-3.511-0.178-6.541-0.039-8.187,0.097c-0.02-0.332-0.047-0.663-0.051-0.999 c1.649-0.135,4.597-0.27,8.018-0.111c-0.079-0.5-0.13-1.011-0.13-1.543c0-1.7,0.6-3.5,1.7-5c-0.5-1.7-1.2-5.3,0.2-6.6 c2.7,0,4.6,1.3,5.5,2.1C21,13.4,22.9,13,25,13s4,0.4,5.6,1.1c0.9-0.8,2.8-2.1,5.5-2.1c1.5,1.4,0.7,5,0.2,6.6c1.1,1.5,1.7,3.2,1.6,5 c0,0.484-0.045,0.951-0.11,1.409c3.499-0.172,6.527-0.034,8.204,0.102c-0.002,0.337-0.033,0.666-0.051,0.999 c-1.671-0.138-4.775-0.28-8.359-0.089c-0.089,0.336-0.197,0.663-0.325,0.98c3.546,0.046,6.665,0.389,8.548,0.689 c-0.043,0.332-0.093,0.661-0.151,0.987c-1.912-0.306-5.171-0.664-8.879-0.682C35.112,30.873,31.557,32.75,26,32.969V33 c2.6,0,5,3.9,5,6.6V45c0,0.823,0.498,1.53,1.209,1.836C41.37,43.804,48,35.164,48,25C48,12.318,37.683,2,25,2S2,12.318,2,25 C2,35.164,8.63,43.804,17.791,46.836z' },
+  { name: 'X', handle: '@PradzzyGotALife', href: 'https://x.com/PradzzyGotALife', icon: 'M 11 4 C 7.134 4 4 7.134 4 11 L 4 39 C 4 42.866 7.134 46 11 46 L 39 46 C 42.866 46 46 42.866 46 39 L 46 11 C 46 7.134 42.866 4 39 4 L 11 4 z M 13.085938 13 L 21.023438 13 L 26.660156 21.009766 L 33.5 13 L 36 13 L 27.789062 22.613281 L 37.914062 37 L 29.978516 37 L 23.4375 27.707031 L 15.5 37 L 13 37 L 22.308594 26.103516 L 13.085938 13 z M 16.914062 15 L 31.021484 35 L 34.085938 35 L 19.978516 15 L 16.914062 15 z' },
+];
+
 interface ProfileCardProps {
   avatarUrl?: string;
   iconUrl?: string;
@@ -307,61 +313,45 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
           </section>
 
           <section className="pc-card pc-back">
-            <div className="pc-inside flex flex-col items-center justify-center p-8 text-center bg-[#030303]">
-              <div className="mb-10">
-                <h3 className="text-xl font-black mb-2 text-[#f5f5f5] tracking-[0.1em] uppercase">Connect</h3>
-                <div className="h-[1px] w-8 bg-white/10 mx-auto" />
-              </div>
-              
-              <div className="flex flex-col gap-3 w-full max-w-[240px]">
-                <a 
-                  href="https://www.linkedin.com/in/prayas-singh-572759362/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 px-4 py-3 rounded-xl border border-white/5 bg-white/[0.02] transition-all duration-300 group/link hover:border-blue-500/30 text-blue-400"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-black/80 flex items-center justify-center border border-white/5 group-hover/link:border-white/20 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" className="w-5 h-5 fill-current">
-                      <path d="M41,4H9C6.24,4,4,6.24,4,9v32c0,2.76,2.24,5,5,5h32c2.76,0,5-2.24,5-5V9C46,6.24,43.76,4,41,4z M17,20v19h-6V20H17z M11,14.47c0-1.4,1.2-2.47,3-2.47s2.93,1.07,3,2.47c0,1.4-1.12,2.53-3,2.53C12.2,17,11,15.87,11,14.47z M39,39h-6c0,0,0-9.26,0-10 c0-2-1-4-3.5-4.04h-0.08C27,24.96,26,27.02,26,29c0,0.91,0,10,0,10h-6V20h6v2.56c0,0,1.93-2.56,5.81-2.56 c3.97,0,7.19,2.73,7.19,8.26V39z"></path>
-                    </svg>
-                  </div>
-                  <span className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-70 group-hover/link:opacity-100">LinkedIn</span>
-                </a>
+            <div className="pc-inside pc-back-inside">
+              <header className="pc-back-head">
+                <div className="pc-mini-avatar">
+                  <img src={miniAvatarUrl || avatarUrl} alt="" />
+                </div>
+                <div>
+                  <h3 className="pc-back-title">Get in touch</h3>
+                  <p className="pc-back-sub">Email is quickest. I'm also here:</p>
+                </div>
+              </header>
 
-                <a 
-                  href="https://github.com/prayasPradzzy" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 px-4 py-3 rounded-xl border border-white/5 bg-white/[0.02] transition-all duration-300 group/link hover:border-white/20 text-white"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-black/80 flex items-center justify-center border border-white/5 group-hover/link:border-white/20 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" className="w-5 h-5 fill-current">
-                      <path d="M17.791,46.836C18.502,46.53,19,45.823,19,45v-5.4c0-0.197,0.016-0.402,0.041-0.61C19.027,38.994,19.014,38.997,19,39 c0,0-3,0-3.6,0c-1.5,0-2.8-0.6-3.4-1.8c-0.7-1.3-1-3.5-2.8-4.7C8.9,32.3,9.1,32,9.7,32c0.6,0.1,1.9,0.9,2.7,2c0.9,1.1,1.8,2,3.4,2 c2.487,0,3.82-0.125,4.622-0.555C21.356,34.056,22.649,33,24,33v-0.025c-5.668-0.182-9.289-2.066-10.975-4.975 c-3.665,0.042-6.856,0.405-8.677,0.707c-0.058-0.327-0.108-0.656-0.151-0.987c1.797-0.296,4.843-0.647,8.345-0.714 c-0.112-0.276-0.209-0.559-0.291-0.849c-3.511-0.178-6.541-0.039-8.187,0.097c-0.02-0.332-0.047-0.663-0.051-0.999 c1.649-0.135,4.597-0.27,8.018-0.111c-0.079-0.5-0.13-1.011-0.13-1.543c0-1.7,0.6-3.5,1.7-5c-0.5-1.7-1.2-5.3,0.2-6.6 c2.7,0,4.6,1.3,5.5,2.1C21,13.4,22.9,13,25,13s4,0.4,5.6,1.1c0.9-0.8,2.8-2.1,5.5-2.1c1.5,1.4,0.7,5,0.2,6.6c1.1,1.5,1.7,3.2,1.6,5 c0,0.484-0.045,0.951-0.11,1.409c3.499-0.172,6.527-0.034,8.204,0.102c-0.002,0.337-0.033,0.666-0.051,0.999 c-1.671-0.138-4.775-0.28-8.359-0.089c-0.089,0.336-0.197,0.663-0.325,0.98c3.546,0.046,6.665,0.389,8.548,0.689 c-0.043,0.332-0.093,0.661-0.151,0.987c-1.912-0.306-5.171-0.664-8.879-0.682C35.112,30.873,31.557,32.75,26,32.969V33 c2.6,0,5,3.9,5,6.6V45c0,0.823,0.498,1.53,1.209,1.836C41.37,43.804,48,35.164,48,25C48,12.318,37.683,2,25,2S2,12.318,2,25 C2,35.164,8.63,43.804,17.791,46.836z"></path>
-                    </svg>
-                  </div>
-                  <span className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-70 group-hover/link:opacity-100">GitHub</span>
-                </a>
+              <button type="button" onClick={() => onContactClick?.()} className="pc-email">
+                Send an email
+              </button>
 
-                <a 
-                  href="https://x.com/PradzzyGotALife" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 px-4 py-3 rounded-xl border border-white/5 bg-white/[0.02] transition-all duration-300 group/link hover:border-sky-400/30 text-sky-400"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-black/80 flex items-center justify-center border border-white/5 group-hover/link:border-white/20 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" className="w-5 h-5 fill-current">
-                      <path d="M 11 4 C 7.134 4 4 7.134 4 11 L 4 39 C 4 42.866 7.134 46 11 46 L 39 46 C 42.866 46 46 42.866 46 39 L 46 11 C 46 7.134 42.866 4 39 4 L 11 4 z M 13.085938 13 L 21.023438 13 L 26.660156 21.009766 L 33.5 13 L 36 13 L 27.789062 22.613281 L 37.914062 37 L 29.978516 37 L 23.4375 27.707031 L 15.5 37 L 13 37 L 22.308594 26.103516 L 13.085938 13 z M 16.914062 15 L 31.021484 35 L 34.085938 35 L 19.978516 15 L 16.914062 15 z"></path>
-                    </svg>
-                  </div>
-                  <span className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-70 group-hover/link:opacity-100">Twitter</span>
-                </a>
-              </div>
+              <ul className="pc-links">
+                {SOCIALS.map((s) => (
+                  <li key={s.name}>
+                    <a href={s.href} target="_blank" rel="noopener noreferrer" className="pc-link">
+                      <svg viewBox="0 0 50 50" className="pc-link-icon" aria-hidden>
+                        <path d={s.icon} />
+                      </svg>
+                      <span className="pc-link-text">
+                        <span className="pc-link-name">{s.name}</span>
+                        <span className="pc-link-handle">{s.handle}</span>
+                      </span>
+                      <svg viewBox="0 0 24 24" className="pc-link-go" aria-hidden>
+                        <path d="M7 17 17 7M9 7h8v8" />
+                      </svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
 
-              <button 
-                onClick={toggleFlip} 
-                className="mt-12 text-[8px] uppercase tracking-[0.5em] opacity-30 hover:opacity-100 transition-opacity font-black border-b border-transparent hover:border-white/10 pb-1"
-              >
-                Back
+              <button type="button" onClick={toggleFlip} className="pc-flip-back">
+                <svg viewBox="0 0 24 24" aria-hidden>
+                  <path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" />
+                </svg>
+                Flip back to profile
               </button>
             </div>
           </section>
@@ -404,6 +394,27 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         
         .pc-back a { pointer-events: auto !important; }
         .pc-back button { pointer-events: auto !important; }
+        .pc-back-inside { display: flex; flex-direction: column; gap: 18px; padding: 28px 22px 20px; background: radial-gradient(120% 60% at 50% 0%, rgba(177,158,239,0.16), transparent 60%), var(--inner-gradient); }
+        .pc-back-head { display: flex; align-items: center; gap: 12px; text-align: left; margin-top: auto; }
+        .pc-back-title { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: #F5F5F5; margin: 0; line-height: 1.1; }
+        .pc-back-sub { font-size: 13px; color: rgba(245,245,245,0.55); margin: 3px 0 0; }
+        .pc-email { width: 100%; padding: 13px 16px; border-radius: 14px; border: none; background: #B19EEF; color: #0a0612; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease; box-shadow: 0 8px 30px rgba(177,158,239,0.25); }
+        .pc-email:hover { transform: translateY(-1px); box-shadow: 0 12px 36px rgba(177,158,239,0.4); }
+        .pc-email:active { transform: translateY(0); }
+        .pc-links { list-style: none; margin: 0; padding: 0; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; background: rgba(0,0,0,0.35); overflow: hidden; }
+        .pc-links li + li { border-top: 1px solid rgba(255,255,255,0.06); }
+        .pc-link { display: flex; align-items: center; gap: 14px; padding: 12px 14px; color: #F5F5F5; text-decoration: none; text-align: left; transition: background-color 0.25s ease; }
+        .pc-link:hover, .pc-link:focus-visible { background: rgba(177,158,239,0.1); }
+        .pc-link-icon { width: 20px; height: 20px; flex-shrink: 0; fill: rgba(245,245,245,0.8); transition: fill 0.25s ease; }
+        .pc-link:hover .pc-link-icon, .pc-link:focus-visible .pc-link-icon { fill: #B19EEF; }
+        .pc-link-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+        .pc-link-name { font-size: 14px; font-weight: 600; line-height: 1.25; }
+        .pc-link-handle { font-size: 12px; color: rgba(245,245,245,0.5); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .pc-link-go { width: 16px; height: 16px; fill: none; stroke: rgba(245,245,245,0.35); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.25s ease, stroke 0.25s ease; }
+        .pc-link:hover .pc-link-go, .pc-link:focus-visible .pc-link-go { stroke: #B19EEF; transform: translate(2px, -2px); }
+        .pc-flip-back { margin-top: auto; align-self: center; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: none; border-radius: 999px; background: transparent; color: rgba(245,245,245,0.6); font-size: 13px; cursor: pointer; transition: color 0.25s ease, background-color 0.25s ease; }
+        .pc-flip-back:hover { color: #F5F5F5; background: rgba(255,255,255,0.05); }
+        .pc-flip-back svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         
         .pc-details { position: absolute; top: 40px; left: 0; right: 0; text-align: center; z-index: 5; }
         .pc-details h3 { font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,1); margin: 0; letter-spacing: -1.5px; text-transform: uppercase; }
