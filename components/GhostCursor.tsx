@@ -18,6 +18,8 @@ type GhostCursorProps = {
   bloomThreshold?: number;
 
   brightness?: number;
+  /** Ceiling for the glow's brightness (0-1). Overlapping trail blobs ease toward it instead of blowing out to white. */
+  maxGlow?: number;
   color?: string;
   mixBlendMode?: React.CSSProperties['mixBlendMode'];
   edgeIntensity?: number;
@@ -41,6 +43,7 @@ const GhostCursor: React.FC<GhostCursorProps> = ({
   bloomThreshold = 0.06,  // ↑ fewer pixels bloom
 
   brightness = 0.02,    // ↓ MAIN brightness reduction
+  maxGlow = 1.0,
   color = '#B19EEF',      // unchanged (color is fine)
   mixBlendMode = 'screen',   // unchanged (still looks good)
 
@@ -100,6 +103,7 @@ const GhostCursor: React.FC<GhostCursorProps> = ({
     uniform float iScale;
     uniform vec3  iBaseColor;
     uniform float iBrightness;
+    uniform float iMaxGlow;
     uniform float iEdgeIntensity;
     varying vec2  vUv;
 
@@ -163,6 +167,10 @@ const GhostCursor: React.FC<GhostCursorProps> = ({
       }
 
       colorAcc *= iBrightness;
+
+      // Soft ceiling: compress the brightest channel toward iMaxGlow, keeping the hue.
+      float peak = max(max(colorAcc.r, colorAcc.g), colorAcc.b);
+      if (peak > 0.0) colorAcc *= iMaxGlow * (1.0 - exp(-peak)) / peak;
 
       vec2 uv01 = gl_FragCoord.xy / iResolution.xy;
       float edgeDist = min(min(uv01.x, 1.0 - uv01.x), min(uv01.y, 1.0 - uv01.y));
@@ -292,6 +300,7 @@ const GhostCursor: React.FC<GhostCursorProps> = ({
         iScale: { value: 1.0 },
         iBaseColor: { value: new THREE.Vector3(baseColor.r, baseColor.g, baseColor.b) },
         iBrightness: { value: brightness },
+        iMaxGlow: { value: maxGlow },
         iEdgeIntensity: { value: edgeIntensity }
       },
       vertexShader: baseVertexShader,
@@ -491,6 +500,12 @@ const GhostCursor: React.FC<GhostCursorProps> = ({
       materialRef.current.uniforms.iBrightness.value = brightness;
     }
   }, [brightness]);
+
+  useEffect(() => {
+    if (materialRef.current) {
+      materialRef.current.uniforms.iMaxGlow.value = maxGlow;
+    }
+  }, [maxGlow]);
 
   useEffect(() => {
     if (materialRef.current) {
