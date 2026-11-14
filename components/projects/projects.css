@@ -83,3 +83,13 @@
     animation: none;
   }
 }
+
+/* Margastra routes: draw in when an interest is picked */
+.route-line {
+  transition: stroke-dashoffset 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-line {
+    transition: none;
+  }
+}

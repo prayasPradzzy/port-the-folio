@@ -5,6 +5,7 @@ import FaultyTerminal from '../components/FaultyTerminal';
 import TerrainDemo, { TERRAIN_STAGES } from '../components/projects/TerrainDemo';
 import FacePong from '../components/projects/FacePong';
 import FlowGraph from '../components/projects/FlowGraph';
+import RouteFinder from '../components/projects/RouteFinder';
 import { prefersReducedMotion } from '../components/projects/useCanvasLoop';
 import '../components/projects/projects.css';
 
@@ -214,8 +215,9 @@ const Projects: React.FC = () => {
           </h2>
           <div className="projects-intro rounded-2xl bg-black/50 p-5 backdrop-blur-md md:col-span-5 md:p-6">
             <p className="text-base leading-relaxed text-white/75 md:text-lg">
-              Terrain from a single satellite photo, a multiplayer Pong where your face is the ball, and AI agents
-              that pass work down a line. Each one has a small working demo you can try here.
+              Terrain from a single satellite photo, a multiplayer Pong where your face is the ball, AI agents
+              that pass work down a line, and a live career guidance platform. Each one has a small working demo
+              you can try here.
             </p>
             <a
               href={GITHUB}
@@ -253,6 +255,17 @@ const Projects: React.FC = () => {
             builtWith="Built with Python, LangGraph, LangChain, Google Gemini 2.5 Flash, and a tabbed Streamlit interface."
             links={[{ label: 'Code on GitHub', href: `${GITHUB}/FlowForge-AI` }]}
             demo={<FlowGraph />}
+          />
+
+          <Project
+            id="margastra"
+            reverse
+            title="Margastra"
+            context="Live platform, career guidance"
+            description="Helps students and working adults find career routes that suit them. Four established tests and an interview with a counsellor feed a ten-page report on which career areas fit, and why."
+            builtWith="Built with Next.js. Scores come straight from the test answers; AI helps with the wording but never sets a number. The code is private."
+            links={[{ label: 'Visit Margastra', href: 'https://margastra.in/', primary: true }]}
+            demo={<RouteFinder />}
           />
         </div>
       </div>
