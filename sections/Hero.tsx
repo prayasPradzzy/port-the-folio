@@ -1,44 +1,10 @@
 
-import React, { useRef, useLayoutEffect, useEffect, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial } from '@react-three/drei';
-import * as THREE from 'three';
+import React, { Suspense, lazy, useRef, useLayoutEffect, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-const PixelSnow: React.FC = () => {
-  const ref = useRef<THREE.Points>(null!);
-  const [positions] = React.useState(() => {
-    const pos = new Float32Array(5000 * 3);
-    for (let i = 0; i < 5000; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
-    }
-    return pos;
-  });
-
-  useFrame((_state, delta) => {
-    if (ref.current) {
-      ref.current.rotation.y += delta * 0.05;
-      ref.current.position.y -= delta * 0.15;
-      if (ref.current.position.y < -5) ref.current.position.y = 5;
-    }
-  });
-
-  return (
-    <Points positions={positions} ref={ref}>
-      <PointMaterial
-        transparent
-        color="#ffffff"
-        size={0.012}
-        sizeAttenuation={true}
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-      />
-    </Points>
-  );
-};
+// three.js is the heaviest dependency on the site, so the snow loads after the page is up.
+const PixelSnow = lazy(() => import('../components/PixelSnow'));
 
 const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null!);
@@ -93,9 +59,9 @@ const Hero: React.FC = () => {
   return (
     <section id="home" ref={containerRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 5] }} frameloop={visible ? 'always' : 'never'}>
-          <PixelSnow />
-        </Canvas>
+        <Suspense fallback={null}>
+          <PixelSnow active={visible} />
+        </Suspense>
       </div>
       
       <div ref={textRef} className="relative z-10 text-center px-6 select-none pointer-events-none">

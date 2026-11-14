@@ -1,7 +1,6 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import FaultyTerminal from '../components/FaultyTerminal';
 import TerrainDemo, { TERRAIN_STAGES } from '../components/projects/TerrainDemo';
 import FacePong from '../components/projects/FacePong';
 import FlowGraph from '../components/projects/FlowGraph';
@@ -10,6 +9,9 @@ import { prefersReducedMotion } from '../components/projects/useCanvasLoop';
 import '../components/projects/projects.css';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// WebGL background, split out so it doesn't hold up the first screen.
+const FaultyTerminal = lazy(() => import('../components/FaultyTerminal'));
 
 const GITHUB = 'https://github.com/prayasPradzzy';
 
@@ -178,25 +180,27 @@ const Projects: React.FC = () => {
       {/* Pinned so the terminal fills the viewport for the whole section instead of stretching. */}
       <div className="absolute inset-0 z-0" aria-hidden>
         <div className="sticky top-0 h-screen w-full opacity-80">
-          <FaultyTerminal
-            scale={2.1}
-            gridMul={[2, 1]}
-            digitSize={1.2}
-            timeScale={1.25}
-            pause={false}
-            scanlineIntensity={0.5}
-            glitchAmount={1}
-            flickerAmount={3}
-            noiseAmp={1}
-            chromaticAberration={0}
-            dither={0}
-            curvature={0.1}
-            tint="#ffffff"
-            mouseReact
-            mouseStrength={1}
-            pageLoadAnimation
-            brightness={0.6}
-          />
+          <Suspense fallback={null}>
+            <FaultyTerminal
+              scale={2.1}
+              gridMul={[2, 1]}
+              digitSize={1.2}
+              timeScale={1.25}
+              pause={false}
+              scanlineIntensity={0.5}
+              glitchAmount={1}
+              flickerAmount={3}
+              noiseAmp={1}
+              chromaticAberration={0}
+              dither={0}
+              curvature={0.1}
+              tint="#ffffff"
+              mouseReact
+              mouseStrength={1}
+              pageLoadAnimation
+              brightness={0.6}
+            />
+          </Suspense>
         </div>
       </div>
 

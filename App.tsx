@@ -14,6 +14,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 const LOADER_SEEN_KEY = 'loader-seen';
 
+// Start fetching the hero's 3D snow right away, in parallel with the intro counter.
+import('./components/PixelSnow');
+
 // The intro counter plays once per browser session, not on every reload.
 const loaderSeen = () => {
   try {
